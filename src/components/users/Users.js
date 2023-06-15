@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import UserItem from "./UserItem";
 import Spinner from "../layout/Spinner";
 import GithubContext from "../../context/github/githubContext";
@@ -10,7 +10,11 @@ const userStyle = {
 };
 
 function Users() {
-  const { loading, users } = useContext(GithubContext);
+  const { loading, users, getUsers } = useContext(GithubContext);
+
+  useEffect(() => {
+    getUsers();
+  }, []); // eslint-disable-line
 
   if (loading) {
     return <Spinner />;
