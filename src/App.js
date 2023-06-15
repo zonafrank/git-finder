@@ -1,24 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { useContext, useEffect } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import About from "./components/pages/About";
+import User from "./components/pages/User";
+import GithubContext from "./context/github/githubContext";
+import Home from "./components/pages/Home";
+import NotFound from "./components/pages/NotFound";
+import RootLayout from "./components/layout/RootLayout";
 
 function App() {
+  const { getUsers } = useContext(GithubContext);
+
+  useEffect(() => {
+    getUsers();
+  }, []); // eslint-disable-line
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<RootLayout />}>
+          <Route index element={<Home />} />
+          <Route path="about" element={<About />} />
+          <Route path="users/:login" element={<User />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
